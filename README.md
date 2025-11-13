@@ -1,4 +1,4 @@
-# inateck-scanner-js-sdk-community
+# @tk-network/inateck-scanner-js-sdk-community
 
 A maintained continuation of the Inateck BLE Scanner module for Ionic.
 
@@ -11,7 +11,7 @@ The following changes were made to the [original package](https://www.npmjs.com/
 ## Install
 
 ```bash
-npm install inateck-scanner-js-sdk
+npm install @tk-network/inateck-scanner-js-sdk-community
 npm install @capacitor-community/bluetooth-le
 npx cap sync
 ```
@@ -67,7 +67,7 @@ The following steps are required to scan for Bluetooth devices without location 
   ```
 - Set the `androidNeverForLocation` flag to `true` when initializing the `ScannerManager`.
   ```ts
-  import { ScannerManager } from "inateck-scanner-js-sdk";
+  import { ScannerManager } from "@tk-network/inateck-scanner-js-sdk-community";
   await ScannerManager.initialize({ androidNeverForLocation: true });
   ```
 
@@ -76,7 +76,7 @@ The following steps are required to scan for Bluetooth devices without location 
 
 ## Usage
 ```typescript
-import { ScannerManager } from "inateck-scanner-js-sdk";
+import { ScannerManager } from "@tk-network/inateck-scanner-js-sdk-community";
 
 async function connectScanner() {
     try {
@@ -167,7 +167,7 @@ async function hasAutoUpdateCache(deviceId: string) {
 
 <docgen-index>
 
-- [inateck-scanner-js-sdk-community](#inateck-scanner-js-sdk-community)
+- [@tk-network/inateck-scanner-js-sdk-community](#tk-networkinateck-scanner-js-sdk-community)
   - [Install](#install)
     - [iOS](#ios)
     - [Android](#android)
