@@ -1,7 +1,7 @@
 {
-  "name": "inateck-scanner-js-sdk",
-  "version": "0.0.3",
-  "description": "A Inateck BLE Scanner module for Ionic react.",
+  "name": "inateck-scanner-js-sdk-community",
+  "version": "1.0.1",
+  "description": "A maintained continuation of the Inateck BLE Scanner module for Ionic.",
   "main": "dist/plugin.cjs.js",
   "module": "dist/esm/index.js",
   "types": "dist/esm/index.d.ts",
@@ -17,10 +17,10 @@
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/inateck/inateck-scanner-js-sdk.git"
+    "url": "git+https://github.com/tk-network/inateck-scanner-js-sdk-community.git"
   },
   "bugs": {
-    "url": "https://github.com/inateck/inateck-scanner-js-sdk/issues"
+    "url": "https://github.com/tk-network/inateck-scanner-js-sdk-community/issues"
   },
   "keywords": [
     "capacitor",

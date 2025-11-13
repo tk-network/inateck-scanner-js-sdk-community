@@ -1,6 +1,12 @@
-# inateck-scanner-js-sdk
+# inateck-scanner-js-sdk-community
 
-A Inateck BLE Scanner module for Ionic react.
+A maintained continuation of the Inateck BLE Scanner module for Ionic.
+
+The following changes were made to the [original package](https://www.npmjs.com/package/inateck-scanner-js-sdk):
+
+* removed appInfo
+* removed outdated peerDependencies
+* updated @capacitor-community/bluetooth-le dependency
 
 ## Install
 
@@ -70,71 +76,90 @@ The following steps are required to scan for Bluetooth devices without location 
 
 ## Usage
 ```typescript
-import {ScannerManager} from "inateck-scanner-js-sdk"
+import { ScannerManager } from "inateck-scanner-js-sdk";
 
-async function connectScanner(){
-  try {
-    await ScannerManager.initialize({ androidNeverForLocation: true });
-    ScannerManager.startScan().then((list)=>{
-      if(list.length>0){
-        const appInfo = {
-          appId: 'M693be162686a',
-          developerId: 'bb57d8e1-f911-47ba-b510-693be162686a',
-          appKey: 'MC0CFQC85w0MsxDng4wHBICX7+iCOiSqfAIUdSerA4/MJ2kYBGAGgIG/YHemNr8=',
+async function connectScanner() {
+    try {
+        await ScannerManager.initialize({ androidNeverForLocation: true });
+        ScannerManager.startScan()
+            .then((list) => {
+                if (list.length > 0) {
+                    ScannerManager.connect(
+                        list[0].device.deviceId,
+                        (value) => {
+                            console.log(value);
+                        }
+                    )
+                        .then((data) => {
+                            console.log(data);
+                            ScannerManager.getBasicProperties(
+                                list[0].device.deviceId,
+                                "firmware_version"
+                            ).then((data) => {
+                                console.log("firmware_version " + data);
+                            });
+                            ScannerManager.getBasicProperties(
+                                list[0].device.deviceId,
+                                "battery"
+                            ).then((data) => {
+                                console.log("readBatteryLevel " + data);
+                            });
+                        })
+                        .catch((error) => {
+                            console.error(error);
+                        });
+                }
+            })
+            .catch((error) => {
+                console.error(error);
+            });
+    } catch (error) {
+        console.error(error);
+    }
+}
 
-        }
-        ScannerManager.connect(list[0].device.deviceId,appInfo,(value)=>{
-          console.log(value)
-        }).then((data)=>{
-          console.log(data)
-          ScannerManager.getBasicProperties(list[0].device.deviceId,"firmware_version").then((data)=>{
-            console.log("firmware_version "+data)
-          })
-          ScannerManager.getBasicProperties(list[0].device.deviceId,"battery").then((data)=>{
-            console.log("readBatteryLevel "+data)
-          })
-        }).catch((err) => {
-          console.error(err);
+async function updateIlluminationControl(deviceId: string) {
+    ScannerManager.editPropertiesInfoByKey(
+        deviceId,
+        "lighting_lamp_control",
+        "01"
+    )
+        .then((data) => {
+            console.log("update Illumination Control " + data);
         })
-      }
-    }).catch((err) => {
-      console.error(err);
-    })
-  } catch (error) {
-    console.error(error);
-  }
+        .catch((error) => {
+            console.error(error);
+        });
 }
 
-async function updateIlluminationControl(deviceId:string){
-  ScannerManager.editPropertiesInfoByKey(deviceId,"lighting_lamp_control","01").then((data)=>{
-    console.log("update Illumination Control "+data)
-  }).catch((err) => {
-    console.error(err);
-  })
+async function cleanCache(deviceId: string) {
+    ScannerManager.editPropertiesInfoByKey(deviceId, "cache", "0")
+        .then((data) => {
+            console.log("clean Cache " + data);
+        })
+        .catch((error) => {
+            console.error(error);
+        });
 }
 
-async function cleanCache(deviceId:string){
-  ScannerManager.editPropertiesInfoByKey(deviceId,"cache","0").then((data)=>{
-    console.log("clean Cache "+data)
-  }).catch((err) => {
-    console.error(err);
-  })
+async function getBarcodesTypeSetting(deviceId: string) {
+    ScannerManager.getAllBarcodeProperties(deviceId)
+        .then((data) => {
+            console.log(data);
+        })
+        .catch((error) => {
+            console.error(error);
+        });
 }
 
-async function getBarcodesTypeSetting(deviceId:string){
-  ScannerManager.getAllBarcodeProperties(deviceId).then((data)=>{
-    console.log(data)
-  }).catch((err) => {
-    console.error(err);
-  })
-}
-
-async function hasAutoUpdateCache(deviceId:string){
-  ScannerManager.getPropertiesInfoByKey(deviceId,"auto_upload_cache").then((data)=>{
-    console.log(data)
-  }).catch((err) => {
-    console.error(err);
-  })
+async function hasAutoUpdateCache(deviceId: string) {
+    ScannerManager.getPropertiesInfoByKey(deviceId, "auto_upload_cache")
+        .then((data) => {
+            console.log(data);
+        })
+        .catch((error) => {
+            console.error(error);
+        });
 }
 ```
 
@@ -142,17 +167,31 @@ async function hasAutoUpdateCache(deviceId:string){
 
 <docgen-index>
 
-* [`initialize(...)`](#initialize)
-* [`startScan(...)`](#startscan)
-* [`stopScan()`](#stopscan)
-* [`connect(...)`](#connect)
-* [`disconnect(...)`](#disconnect)
-* [`getBasicProperties(...)`](#getbasicproperties)
-* [`getAllBarcodeProperties(...)`](#getallbarcodeproperties)
-* [`editPropertiesInfoByKey(...)`](#editpropertiesinfobykey)
-* [`getPropertiesInfoByKey(...)`](#getpropertiesinfobykey)
-* [Interfaces](#interfaces)
-* [Enums](#enums)
+- [inateck-scanner-js-sdk-community](#inateck-scanner-js-sdk-community)
+  - [Install](#install)
+    - [iOS](#ios)
+    - [Android](#android)
+      - [(Optional) Android 12 Bluetooth permissions](#optional-android-12-bluetooth-permissions)
+  - [Usage](#usage)
+  - [API](#api)
+    - [initialize(...)](#initialize)
+    - [startScan(...)](#startscan)
+    - [stopScan()](#stopscan)
+    - [connect(...)](#connect)
+    - [disconnect(...)](#disconnect)
+    - [getBasicProperties(...)](#getbasicproperties)
+    - [getAllBarcodeProperties(...)](#getallbarcodeproperties)
+    - [editPropertiesInfoByKey(...)](#editpropertiesinfobykey)
+    - [getPropertiesInfoByKey(...)](#getpropertiesinfobykey)
+    - [Interfaces](#interfaces)
+      - [InitializeOptions](#initializeoptions)
+      - [ScanResult](#scanresult)
+      - [BleDevice](#bledevice)
+      - [DataView](#dataview)
+      - [ArrayBuffer](#arraybuffer)
+      - [callbackResult](#callbackresult)
+    - [Enums](#enums)
+      - [PropertyKeyList](#propertykeylist)
 
 </docgen-index>
 
@@ -208,7 +247,7 @@ Stop scanning for BLE scanner
 ### connect(...)
 
 ```typescript
-connect(deviceId: string, appInfo: AppInfo, callback: (value: callbackResult) => void) => Promise<string>
+connect(deviceId: string, callback: (value: callbackResult) => void) => Promise<string>
 ```
 
 Attempts to connect to a peripheral. In many cases if you can't connect you have to scan for the peripheral before.
@@ -217,7 +256,6 @@ the callbacks will be invoked when the device is disconnected or a barcode is re
 | Param          | Type                                                                          |
 | -------------- | ----------------------------------------------------------------------------- |
 | **`deviceId`** | <code>string</code>                                                           |
-| **`appInfo`**  | <code><a href="#appinfo">AppInfo</a></code>                                   |
 | **`callback`** | <code>(value: <a href="#callbackresult">callbackResult</a>) =&gt; void</code> |
 
 **Returns:** <code>Promise&lt;string&gt;</code>
@@ -390,15 +428,6 @@ buffer as needed.
 | **slice** | (begin: number, end?: number \| undefined) =&gt; <a href="#arraybuffer">ArrayBuffer</a> | Returns a section of an <a href="#arraybuffer">ArrayBuffer</a>. |
 
 
-#### AppInfo
-
-| Prop              | Type                |
-| ----------------- | ------------------- |
-| **`appId`**       | <code>string</code> |
-| **`developerId`** | <code>string</code> |
-| **`appKey`**      | <code>string</code> |
-
-
 #### callbackResult
 
 | Prop       | Type                | Description                                     |
@@ -412,45 +441,45 @@ buffer as needed.
 
 #### PropertyKeyList
 
-| Members                                | Description                                                                         |
-| -------------------------------------- | ----------------------------------------------------------------------------------- |
-| **`"cache"`**                          | read barcode cache quantity or clean barcode cache value is 0                       |
-| **`"restore_factory"`**                | Restore factory settings value is 1                                                 |
-| **`"enable_or_disable_all_barcodes"`** | enable or disable all barcodes 1 is enable 0 is disable                             |
-| **`"restore_default_barcode"`**        | restore default barcode type value is 1                                             |
-| **`"bluetooth_name"`**                 | read/update bluetooth name key                                                      |
-| **`"volume"`**                         | read/update volume value 0 is mute, 2 is low, 4 is middle, 8 is loud                |
-| **`"lighting_lamp_control"`**          | Illumination key value 00 is scanning, 01 is Stay on,10 is Stay off                 |
-| **`"positioning_lamp_control"`**       | Navigation Light key value 00 is scanning, 01 is Stay on,10 is Stay off             |
-| **`"shake_reminder"`**                 | Vibration reminder 0 is close,1 is open                                             |
-| **`"shake_intensity"`**                | Vibration strength 0 is mute,1 is loud                                              |
-| **`"position_light_twinkle"`**         | Navigation Light flashing 0 is close,1 is opens                                     |
-| **`"start_up_clean_cache"`**           | This key Clear data from buffer at start-up 1 is enable 0 is disable                |
-| **`"auto_upload_cache"`**              | This key Auto uploading barcode cache 1 is enable 0 is disable                      |
+| Members                                | Description                                                                              |
+| -------------------------------------- | ---------------------------------------------------------------------------------------- |
+| **`"cache"`**                          | read barcode cache quantity or clean barcode cache value is 0                            |
+| **`"restore_factory"`**                | Restore factory settings value is 1                                                      |
+| **`"enable_or_disable_all_barcodes"`** | enable or disable all barcodes 1 is enable 0 is disable                                  |
+| **`"restore_default_barcode"`**        | restore default barcode type value is 1                                                  |
+| **`"bluetooth_name"`**                 | read/update bluetooth name key                                                           |
+| **`"volume"`**                         | read/update volume value 0 is mute, 2 is low, 4 is middle, 8 is loud                     |
+| **`"lighting_lamp_control"`**          | Illumination key value 00 is scanning, 01 is Stay on,10 is Stay off                      |
+| **`"positioning_lamp_control"`**       | Navigation Light key value 00 is scanning, 01 is Stay on,10 is Stay off                  |
+| **`"shake_reminder"`**                 | Vibration reminder 0 is close,1 is open                                                  |
+| **`"shake_intensity"`**                | Vibration strength 0 is mute,1 is loud                                                   |
+| **`"position_light_twinkle"`**         | Navigation Light flashing 0 is close,1 is opens                                          |
+| **`"start_up_clean_cache"`**           | This key Clear data from buffer at start-up 1 is enable 0 is disable                     |
+| **`"auto_upload_cache"`**              | This key Auto uploading barcode cache 1 is enable 0 is disable                           |
 | **`"motor_swing_grade"`**              | Motor PWM vibration intensity level 1-8 value 0000,0001,0010, 0011，。。。。1000 is loud |
-| **`"Codabar"`**                        | barcode type key value 1 is enable 0 is disable                                     |
-| **`"Code 11"`**                        |                                                                                     |
-| **`"Code 128"`**                       |                                                                                     |
-| **`"Code 39"`**                        |                                                                                     |
-| **`"Code 93"`**                        |                                                                                     |
-| **`"GS1-128"`**                        |                                                                                     |
-| **`"USPS/FedEx"`**                     |                                                                                     |
-| **`"EAN-8"`**                          |                                                                                     |
-| **`"EAN-13"`**                         |                                                                                     |
-| **`"MSI"`**                            |                                                                                     |
-| **`"UPC-A"`**                          |                                                                                     |
-| **`"UPC-E0"`**                         |                                                                                     |
-| **`"UPC-E1"`**                         |                                                                                     |
-| **`"Chinese Post"`**                   |                                                                                     |
-| **`"IATA 25"`**                        |                                                                                     |
-| **`"Interleaved 25"`**                 |                                                                                     |
-| **`"Matrix 25"`**                      |                                                                                     |
-| **`"Standard 25"`**                    |                                                                                     |
-| **`"QR Code"`**                        |                                                                                     |
-| **`"Data Matrix"`**                    |                                                                                     |
-| **`"PDF 417"`**                        |                                                                                     |
-| **`"Aztec"`**                          |                                                                                     |
-| **`"Maxi"`**                           |                                                                                     |
-| **`"Han Xin"`**                        |                                                                                     |
+| **`"Codabar"`**                        | barcode type key value 1 is enable 0 is disable                                          |
+| **`"Code 11"`**                        |                                                                                          |
+| **`"Code 128"`**                       |                                                                                          |
+| **`"Code 39"`**                        |                                                                                          |
+| **`"Code 93"`**                        |                                                                                          |
+| **`"GS1-128"`**                        |                                                                                          |
+| **`"USPS/FedEx"`**                     |                                                                                          |
+| **`"EAN-8"`**                          |                                                                                          |
+| **`"EAN-13"`**                         |                                                                                          |
+| **`"MSI"`**                            |                                                                                          |
+| **`"UPC-A"`**                          |                                                                                          |
+| **`"UPC-E0"`**                         |                                                                                          |
+| **`"UPC-E1"`**                         |                                                                                          |
+| **`"Chinese Post"`**                   |                                                                                          |
+| **`"IATA 25"`**                        |                                                                                          |
+| **`"Interleaved 25"`**                 |                                                                                          |
+| **`"Matrix 25"`**                      |                                                                                          |
+| **`"Standard 25"`**                    |                                                                                          |
+| **`"QR Code"`**                        |                                                                                          |
+| **`"Data Matrix"`**                    |                                                                                          |
+| **`"PDF 417"`**                        |                                                                                          |
+| **`"Aztec"`**                          |                                                                                          |
+| **`"Maxi"`**                           |                                                                                          |
+| **`"Han Xin"`**                        |                                                                                          |
 
 </docgen-api>

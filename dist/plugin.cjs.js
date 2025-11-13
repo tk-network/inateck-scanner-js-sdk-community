@@ -219,16 +219,6 @@ class ScannerManagerClass {
                   .then(() => {
                     this.scaning = false;
                     resolve(deviceId);
-                    // TODO TOM
-                    // this.validateApp(deviceId, appInfo).then(() => {
-                    //     this.scaning = false;
-                    //     resolve(deviceId);
-                    // }).catch(() => {
-                    //     this.scaning = false;
-                    //     this.stopNotifications(deviceId);
-                    //     this.disconnect(deviceId);
-                    //     reject('Authorization fails');
-                    // });
                   })
                   .catch((error) => {
                     this.scaning = false;
