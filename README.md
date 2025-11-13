@@ -67,7 +67,7 @@ The following steps are required to scan for Bluetooth devices without location 
   ```
 - Set the `androidNeverForLocation` flag to `true` when initializing the `ScannerManager`.
   ```ts
-  import {ScannerManager} from "inateck-scanner-js-sdk"
+  import { ScannerManager } from "inateck-scanner-js-sdk";
   await ScannerManager.initialize({ androidNeverForLocation: true });
   ```
 

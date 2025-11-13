@@ -1,6 +1,6 @@
 {
-  "name": "inateck-scanner-js-sdk-community",
-  "version": "1.0.1",
+  "name": "@tk-network/inateck-scanner-js-sdk-community",
+  "version": "1.0.0",
   "description": "A maintained continuation of the Inateck BLE Scanner module for Ionic.",
   "main": "dist/plugin.cjs.js",
   "module": "dist/esm/index.js",
@@ -40,8 +40,7 @@
     "docgen": "docgen --api ScannerManagerPlugin --output-readme README.md --output-json dist/docs.json",
     "build": "npm run clean && tsc && rollup -c rollup.config.js",
     "clean": "rimraf ./dist",
-    "watch": "tsc --watch",
-    "prepublishOnly": "npm run build"
+    "watch": "tsc --watch"
   },
   "devDependencies": {
     "@capacitor/android": "^7.4.4",
